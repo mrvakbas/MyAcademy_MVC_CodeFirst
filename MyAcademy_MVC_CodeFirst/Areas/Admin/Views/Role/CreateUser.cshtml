@@ -1,0 +1,82 @@
+﻿@model MyAcademy_MVC_CodeFirst.Areas.Admin.Models.UserCreateViewModel
+
+@{
+    ViewBag.Title = "Yeni Kullanıcı Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid p-4">
+    <div class="d-flex align-items-center mb-4">
+        <h1 class="h4 mb-0 fw-bold text-dark">Kullanıcı Yönetimi</h1>
+        <span class="badge bg-success ms-3 shadow-sm">Yeni Kayıt</span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 overflow-hidden">
+                <div class="card-header bg-white border-0 py-3">
+                    <h6 class="mb-0 fw-bold text-muted text-uppercase small" style="letter-spacing: 1px;">
+                        <i class="fas fa-user-plus me-2 text-primary"></i>Yeni Kullanıcı Oluştur
+                    </h6>
+                </div>
+                <div class="card-body p-4 pt-2">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-muted text-uppercase">Ad Soyad</label>
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control border-light-subtle py-2", placeholder = "Zorunlu alan..." })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-muted text-uppercase">Kullanıcı Adı</label>
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control border-light-subtle py-2" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-muted text-uppercase">E-posta</label>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control border-light-subtle py-2", type = "email" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-muted text-uppercase">Şifre</label>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control border-light-subtle py-2" })
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <a href="@Url.Action("ManageUserRoles")" class="btn btn-light btn-sm px-4 fw-semibold text-muted">İptal</a>
+                            <button type="submit" class="btn btn-primary btn-sm px-4 shadow-sm">
+                                <i class="fas fa-save me-1"></i> Kullanıcıyı Kaydet
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="alert alert-info border-0 shadow-sm p-4">
+                <h6 class="fw-bold"><i class="fas fa-info-circle me-2"></i>Bilgilendirme</h6>
+                <p class="small mb-0 text-muted">
+                    Yeni oluşturulan kullanıcılara sistem tarafından otomatik olarak <strong>User</strong> rolü atanacaktır. Rol değişikliğini daha sonra yönetim panelinden yapabilirsiniz.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.1);
+    }
+
+    .card {
+        border-radius: 12px;
+    }
+
+    .btn {
+        border-radius: 8px;
+    }
+</style>

@@ -1,0 +1,115 @@
+﻿@model Category
+
+@{
+    ViewBag.Title = "Yeni Kategori Oluştur";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid p-4">
+    <div class="d-flex align-items-center mb-4">
+        <h1 class="h4 mb-0 fw-bold text-dark">Kategori Yönetimi</h1>
+        <span class="badge bg-primary text-white ms-3 shadow-sm px-3 py-2" style="background-color: #4e73df !important;">Yeni Ekle</span>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 overflow-hidden">
+                <div class="card-header bg-white border-0 py-3">
+                    <h6 class="mb-0 fw-bold text-muted text-uppercase small" style="letter-spacing: 1px; display: flex; align-items: center;">
+                        <svg width="18" height="18" fill="none" stroke="#4e73df" viewBox="0 0 24 24" class="me-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Yeni Kategori Detayları
+                    </h6>
+                </div>
+
+                <div class="card-body p-4 pt-2">
+                    <div class="alert alert-light border-0 shadow-sm d-flex gap-3 mb-4 py-3" role="alert">
+                        <div class="bg-primary bg-opacity-10 p-2 rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: rgba(78, 115, 223, 0.1) !important;">
+                            <svg width="20" height="20" fill="none" stroke="#4e73df" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.674a1 1 0 00.951-.688l1.396-4.707A1 1 0 0015.732 10H8.268a1 1 0 00-.952 1.605l1.396 4.707A1 1 0 009.663 17zM12 10V3m-3 3h6" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h6 class="alert-heading mb-1 fw-bold small text-dark">İpucu:</h6>
+                            <p class="mb-0 small text-muted">Kategori adı benzersiz olmalı ve ürünleri doğru sınıflandırmak için açıkça tanımlanmalıdır.</p>
+                        </div>
+                    </div>
+
+                    @using (Html.BeginForm("CreateCategory", "Category", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-4">
+                            <label class="form-label small fw-semibold text-muted text-uppercase d-flex align-items-center">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="me-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
+                                Kategori Adı
+                            </label>
+                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control border-light-subtle py-2", placeholder = "Örn: Hayat Sigortası, Kasko vb...", required = "required" })
+                            @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger small mt-1" })
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                            <a href="/Admin/Category/Index" class="btn btn-light btn-sm px-4 fw-semibold text-muted">Vazgeç</a>
+                            <button type="submit" class="btn btn-primary btn-sm px-4 shadow-sm fw-semibold d-flex align-items-center" style="background-color: #4e73df !important; border: none;">
+                                <svg width="16" height="16" fill="none" stroke="white" viewBox="0 0 24 24" class="me-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                                </svg>
+                                Kategoriyi Kaydet
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm bg-light bg-opacity-50 h-100" style="background-color: rgba(248, 249, 252, 0.5) !important;">
+                <div class="card-body p-4 text-center">
+                    <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-flex mb-3" style="background-color: rgba(78, 115, 223, 0.1) !important;">
+                        <svg width="32" height="32" fill="none" stroke="#4e73df" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-dark">Neden Önemli?</h6>
+                    <p class="small text-muted text-start">
+                        Kategoriler, müşterilerinizin ürünleri web sitenizde daha kolay bulmasını sağlar.
+                        Doğru bir kategorizasyon SEO performansınızı artırır.
+                    </p>
+                    <div class="text-start small text-muted">
+                        <div class="d-flex align-items-center mb-2">
+                            <svg width="16" height="16" fill="none" stroke="#1cc88a" viewBox="0 0 24 24" class="me-2"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            Kısa ve öz isimler seçin.
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <svg width="16" height="16" fill="none" stroke="#1cc88a" viewBox="0 0 24 24" class="me-2"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            Benzer isimlerden kaçının.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        border-color: #4e73df;
+        box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.1);
+    }
+
+    .card {
+        border-radius: 12px;
+    }
+
+    .btn {
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+</style>

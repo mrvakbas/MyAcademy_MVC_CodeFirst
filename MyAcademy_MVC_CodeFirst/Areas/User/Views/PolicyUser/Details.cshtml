@@ -1,0 +1,134 @@
+﻿@model MyAcademy_MVC_CodeFirst.Data.Entities.Policy
+@{
+    ViewBag.Title = "Poliçe Detayı";
+    Layout = "~/Areas/User/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="container-fluid p-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="h3 fw-bold text-dark mb-0">Poliçe Sertifikası #@Model.Id</h2>
+        </div>
+        <a href="/User/PolicyUser/Index" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+            <i class="fas fa-chevron-left me-1"></i> Geri Dön
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-3 me-3">
+                            <i class="fas fa-file-shield fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-0">Teminat Detayları</h5>
+                            <small class="text-muted">Poliçenize ait teknik bilgiler ve süreler</small>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3 bg-light bg-opacity-50">
+                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Sigorta Türü</label>
+                                <span class="h6 fw-bold text-dark">@Model.Category.Name</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3 bg-light bg-opacity-50">
+                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Poliçe Durumu</label>
+                                @if (Model.IsActive)
+                                {
+                                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3">Aktif Koruma</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3">Süresi Dolmuş</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="far fa-calendar-check text-muted me-2"></i>
+                                <div>
+                                    <label class="text-muted small d-block">Başlangıç Tarihi</label>
+                                    <span class="fw-bold">@Model.StartDate.ToString("dd MMMM yyyy")</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="far fa-calendar-times text-muted me-2"></i>
+                                <div>
+                                    <label class="text-muted small d-block">Bitiş Tarihi</label>
+                                    <span class="fw-bold">@Model.EndDate.ToString("dd MMMM yyyy")</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4 opacity-25">
+
+                    <h6 class="fw-bold mb-3">Kapsam ve Bilgilendirme</h6>
+                    <p class="text-muted mb-0" style="line-height: 1.6;">
+                        Bu poliçe, <strong>@Model.AppUser.Name @Model.AppUser.Surname</strong> adına düzenlenmiş olup,
+                        seçilen <strong>@Model.Category.Name</strong> branşındaki tüm riskleri poliçe genel şartları uyarınca teminat altına alır.
+                        Hasar durumunda 7/24 destek hattımızdan yardım alabilirsiniz.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 bg-dark text-white mb-4">
+                <div class="card-body p-4 text-center">
+                    <p class="text-white-50 small fw-bold text-uppercase mb-2">Poliçe Bedeli</p>
+                    <h2 class="display-5 fw-bold mb-0">@Model.Price.ToString("C2")</h2>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3">Hızlı İşlemler</h6>
+                    <div class="d-grid gap-2">
+                        <button onclick="window.print()" class="btn btn-light border d-flex align-items-center justify-content-center gap-2 py-2">
+                            <i class="fas fa-print text-muted"></i> Yazdır / PDF İndir
+                        </button>
+                        <button class="btn btn-light border d-flex align-items-center justify-content-center gap-2 py-2">
+                            <i class="fas fa-headset text-muted"></i> Destek Talebi Oluştur
+                        </button>
+                        <hr>
+                        <div class="bg-info bg-opacity-10 p-3 rounded-3">
+                            <div class="d-flex gap-2">
+                                <i class="fas fa-info-circle text-info mt-1"></i>
+                                <small class="text-info-emphasis">Poliçenizin bitimine <strong>@((Model.EndDate - DateTime.Now).Days)</strong> gün kalmıştır.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: "›";
+        font-size: 1.2rem;
+        line-height: 1;
+        vertical-align: middle;
+    }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+
+    .card {
+        transition: transform 0.3s ease;
+    }
+
+    .card-body label {
+        letter-spacing: 0.5px;
+    }
+</style>

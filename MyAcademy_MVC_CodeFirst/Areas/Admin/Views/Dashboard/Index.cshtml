@@ -1,0 +1,573 @@
+﻿@model List<MyAcademy_MVC_CodeFirst.Data.Entities.Policy>
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="container-fluid p-4">
+
+    <div class="row mb-4 align-items-end">
+        <div class="col-auto">
+            <p class="text-muted small fw-semibold text-uppercase mb-1">@DateTime.Now.ToString("dddd, dd MMMM yyyy")</p>
+            <h2 class="h2 fw-bold mb-0 text-dark">Genel Bakış</h2>
+        </div>
+        <div class="col-auto ms-auto">
+            <a href="/Admin/Policy/CreatePolicy" class="btn btn-primary d-flex align-items-center gap-2 px-3 shadow-sm">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Yeni Poliçe Oluştur
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="card shadow-sm border-0 h-100 card-animate">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="bg-success bg-opacity-10 p-2 rounded">
+                            <svg class="text-success" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success fw-bold">Toplam Kasa</span>
+                    </div>
+                    <p class="text-muted small fw-semibold text-uppercase mb-1">Poliçe Geliri</p>
+                    <h4 class="fw-bold mb-0 text-dark">₺@ViewBag.TotalRevenue.ToString("N2")</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card shadow-sm border-0 h-100 card-animate">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="bg-primary bg-opacity-10 p-2 rounded">
+                            <svg class="text-primary" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <span class="badge bg-primary bg-opacity-10 text-primary fw-bold">@ViewBag.TotalUsers Kişi</span>
+                    </div>
+                    <p class="text-muted small fw-semibold text-uppercase mb-1">Müşteri Sayısı</p>
+                    <h4 class="fw-bold mb-0 text-dark">@ViewBag.TotalUsers</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card shadow-sm border-0 h-100 card-animate">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="bg-info bg-opacity-10 p-2 rounded">
+                            <svg class="text-info" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <span class="badge bg-info bg-opacity-10 text-info fw-bold">Aktif: @ViewBag.ActivePolicies</span>
+                    </div>
+                    <p class="text-muted small fw-semibold text-uppercase mb-1">Toplam Poliçe</p>
+                    <h4 class="fw-bold mb-0 text-dark">@ViewBag.TotalPolicies</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card shadow-sm border-0 h-100 card-animate">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="bg-warning bg-opacity-10 p-2 rounded">
+                            <svg class="text-warning" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                            </svg>
+                        </div>
+                        <span class="badge bg-warning bg-opacity-10 text-warning fw-bold">Branşlar</span>
+                    </div>
+                    <p class="text-muted small fw-semibold text-uppercase mb-1">Kategori Sayısı</p>
+                    <h4 class="fw-bold mb-0 text-dark">@ViewBag.TotalCategories</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Aylık Poliçe Üretimi</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area" style="height:300px;">
+                        <canvas id="dbPolicyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-success">Kategori Dağılımı</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area" style="height:300px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-light py-3 d-flex align-items-center justify-content-between">
+                    <h5 class="m-0 text-dark fw-bold">
+                        <i class="fas fa-brain text-primary me-2"></i>ML.Net: Şehir Bazlı 3 Aylık Poliçe Tahmini
+                    </h5>
+                    <span class="badge bg-soft-primary text-primary px-3">Yapay Zeka Destekli</span>
+                </div>
+                <div class="card-body p-4">
+                    @if (ViewBag.CityForecasts != null && ((Dictionary<string, int[]>)ViewBag.CityForecasts).Any())
+                    {
+                        <div class="chart-container" style="position: relative; height:450px;">
+                            <canvas id="forecastChart"></canvas>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-exclamation-circle fa-3x text-muted mb-3"></i>
+                            <p class="text-secondary">Tahmin oluşturmak için yeterli veri seti bulunamadı.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-3">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-dark">Son Eklenen Poliçeler</h5>
+                    <a href="/Admin/Policy/Index" class="text-primary text-decoration-none small fw-bold">Tümünü Yönet</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="bg-light">
+                            <tr class="text-muted small">
+                                <th class="ps-4">MÜŞTERİ</th>
+                                <th>BRANŞ</th>
+                                <th>POLİÇE NO</th>
+                                <th>BEDEL</th>
+                                <th>BAŞLANGIÇ</th>
+                                <th>BİTİŞ</th>
+                                <th>DURUM</th>
+                                <th class="text-end pe-4">İŞLEM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center">
+                                                <svg width="18" height="18" fill="currentColor" class="text-primary" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <span class="fw-bold small text-dark">@item.AppUser.Name @item.AppUser.Surname</span>
+                                                <span class="text-muted" style="font-size: 11px;">@@@item.AppUser.UserName</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary bg-opacity-10 text-secondary fw-semibold border border-secondary border-opacity-25 px-2 py-1" style="font-size: 11px;">
+                                            @item.Category.Name
+                                        </span>
+                                    </td>
+                                    <td class="small fw-bold text-muted">#@item.PolicyNumber</td>
+                                    <td class="small fw-bold text-dark">₺@item.Price.ToString("N2")</td>
+                                    <td class="small text-muted">@item.StartDate.ToShortDateString()</td>
+                                    <td class="small text-muted">@item.EndDate.ToShortDateString()</td>
+                                    <td>
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3" style="font-size: 11px;">Aktif</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3" style="font-size: 11px;">Pasif</span>
+                                        }
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <a href="/Admin/Policy/UpdatePolicy/@item.Id" class="btn btn-sm btn-white border shadow-sm rounded-circle p-1" title="Düzenle">
+                                                <svg width="16" height="16" fill="none" stroke="#4e73df" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="mb-0 fw-bold text-dark">Mesaj Konu Dağılımı</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr class="text-muted small">
+                                <th class="ps-4">KONU (SUBJECT)</th>
+                                <th class="text-center pe-4">ADET</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.ContactStatsList != null)
+                            {
+                                foreach (var item in (List<MyAcademy_MVC_CodeFirst.Areas.Admin.Data.SubjectStatDto>)ViewBag.ContactStatsList)
+                                {
+                                    <tr>
+                                        <td class="ps-4 fw-semibold">@item.Subject</td>
+                                        <td class="text-center pe-4">
+                                            <span class="badge bg-primary rounded-pill px-3">
+                                                @item.Count
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted py-3">Veri yüklenemedi.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-body">
+                    <div style="height: 250px;">
+                        <canvas id="contactSubjectChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    :root {
+        --primary-color: #4e73df;
+        --success-color: #1cc88a;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        height: 5px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: #cbd5e0;
+        border-radius: 10px;
+    }
+
+    .bg-soft-primary {
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+    .card-animate {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .card-animate:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
+        }
+
+    .quick-action-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        gap: 8px;
+        transition: all 0.2s;
+    }
+
+        .quick-action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .quick-action-btn .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .quick-action-btn span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+    .table thead th {
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        border-bottom-width: 1px;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const dbLabels = @Html.Raw(ViewBag.Labels ?? "[]");
+    const dbData = @Html.Raw(ViewBag.Data ?? "[]");
+
+    const ctx = document.getElementById('dbPolicyChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: dbLabels,
+            datasets: [{
+                label: 'Poliçe Sayısı',
+                data: dbData,
+                backgroundColor: [
+                    'rgba(99, 102, 241, 0.8)',
+                    'rgba(16, 185, 129, 0.8)',
+                    'rgba(14, 165, 233, 0.8)',
+                    'rgba(245, 158, 11, 0.8)',
+                    'rgba(244, 63, 94, 0.8)',
+                    'rgba(100, 116, 139, 0.8)'
+                ],
+                borderColor: [
+                    '#6366f1', '#10b981', '#0ea5e9', '#f59e0b', '#f43f5e', '#64748b'
+                ],
+                borderWidth: 1.5,
+                borderRadius: 6,
+                borderSkipped: false,
+                hoverBackgroundColor: [
+                    '#4f46e5', '#059669', '#0284c7', '#d97706', '#e11d48', '#475569'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleFont: { size: 14 },
+                    bodyFont: { size: 13 },
+                    padding: 10,
+                    cornerRadius: 8,
+                    displayColors: false
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: '#64748b',
+                        font: { weight: '500' }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: '#f1f5f9'
+                    },
+                    ticks: {
+                        stepSize: 1,
+                        color: '#64748b'
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+    const catLabels = @Html.Raw(ViewBag.CategoryLabels ?? "[]");
+    const catData = @Html.Raw(ViewBag.CategoryData ?? "[]");
+
+    const ctxCat = document.getElementById('categoryChart').getContext('2d');
+    new Chart(ctxCat, {
+        type: 'doughnut',
+        data: {
+            labels: catLabels,
+            datasets: [{
+                data: catData,
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+                borderWidth: 5
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    cornerRadius: 8
+                }
+            },
+            cutout: '70%'
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const rawData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CityForecasts));
+        if (!rawData) return;
+
+        const sortedCities = Object.keys(rawData).sort((a, b) => {
+            const totalA = rawData[a].reduce((acc, val) => acc + val, 0);
+            const totalB = rawData[b].reduce((acc, val) => acc + val, 0);
+            return totalB - totalA;
+        });
+
+        const ctx = document.getElementById('forecastChart').getContext('2d');
+
+        const grad1 = ctx.createLinearGradient(0, 0, 0, 400);
+        grad1.addColorStop(0, '#5a8dee');
+        grad1.addColorStop(1, '#2c5cc5');
+
+        const grad2 = ctx.createLinearGradient(0, 0, 0, 400);
+        grad2.addColorStop(0, '#47c7eb');
+        grad2.addColorStop(1, '#1c92b6');
+
+        const grad3 = ctx.createLinearGradient(0, 0, 0, 400);
+        grad3.addColorStop(0, '#73e1db');
+        grad3.addColorStop(1, '#48b1ad');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: sortedCities,
+                datasets: [
+                    {
+                        label: '1. Ay Tahmini',
+                        data: sortedCities.map(c => rawData[c][0]),
+                        backgroundColor: grad1,
+                        borderRadius: 6
+                    },
+                    {
+                        label: '2. Ay Tahmini',
+                        data: sortedCities.map(c => rawData[c][1]),
+                        backgroundColor: grad2,
+                        borderRadius: 6
+                    },
+                    {
+                        label: '3. Ay Tahmini',
+                        data: sortedCities.map(c => rawData[c][2]),
+                        backgroundColor: grad3,
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { usePointStyle: true, font: { family: 'Poppins', size: 12 } }
+                    },
+                    tooltip: {
+                        padding: 12,
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 },
+                        cornerRadius: 8,
+                        displayColors: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { borderDash: [5, 5], color: '#e2e2e2' },
+                        ticks: { font: { size: 12 } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { weight: 'bold' } }
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                }
+            }
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Verileri güvenli bir şekilde alıyoruz
+        var labels = @Html.Raw(ViewBag.ContactLabels ?? "[]");
+        var dataValues = @Html.Raw(ViewBag.ContactData ?? "[]");
+
+        var ctx = document.getElementById("contactSubjectChart").getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Gelen Mesaj Sayısı',
+                    data: dataValues,
+                    backgroundColor: ['#4e73df', '#1cc88a', '#f6c23e', '#e74a3b', '#36b9cc'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 } // Rakamlar tam sayı görünsün
+                    }
+                }
+            }
+        });
+    });
+</script>

@@ -1,0 +1,95 @@
+﻿@model MyAcademy_MVC_CodeFirst.Areas.Admin.Models.UserEditViewModel
+
+@{
+    ViewBag.Title = "Kullanıcı Bilgilerini Güncelle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid p-4">
+    <div class="d-flex align-items-center mb-4">
+        <h1 class="h4 mb-0 fw-bold text-dark">Kullanıcı Yönetimi</h1>
+        <span class="badge bg-warning text-dark ms-3 shadow-sm">Bilgileri Güncelle</span>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 overflow-hidden">
+                <div class="card-header bg-white border-0 py-3">
+                    <h6 class="mb-0 fw-bold text-muted text-uppercase small" style="letter-spacing: 1px;">
+                        <i class="fas fa-user-edit me-2 text-warning"></i>Kullanıcı Profilini Düzenle
+                    </h6>
+                </div>
+                <div class="card-body p-4 pt-2">
+                    @using (Html.BeginForm("UpdateUser", "Role", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.Id)
+
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger border-0 small" })
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-muted text-uppercase">Ad Soyad</label>
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control border-light-subtle py-2", placeholder = "Ad Soyad giriniz..." })
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-muted text-uppercase">Kullanıcı Adı</label>
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control border-light-subtle py-2", placeholder = "Kullanıcı adı..." })
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-muted text-uppercase">E-posta Adresi</label>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control border-light-subtle py-2", type = "email", placeholder = "örnek@mail.com" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-muted text-uppercase">Yeni Şifre (Değiştirmek istemiyorsanız boş bırakın)</label>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control border-light-subtle py-2", placeholder = "••••••••" })
+                            <small class="text-muted">Şifreyi güncellemek için doldurun, aksi halde boş bırakın.</small>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                            <a href="@Url.Action("ManageUserRoles", "Role")" class="btn btn-light btn-sm px-4 fw-semibold text-muted">Vazgeç</a>
+                            <button type="submit" class="btn btn-warning btn-sm px-4 shadow-sm fw-semibold">
+                                <i class="fas fa-save me-1"></i> Değişiklikleri Kaydet
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm bg-light bg-opacity-50">
+                <div class="card-body p-4 text-center">
+                    <div class="bg-warning bg-opacity-10 p-3 rounded-circle d-inline-flex mb-3">
+                        <i class="fas fa-shield-alt fa-2x text-warning"></i>
+                    </div>
+                    <h6 class="fw-bold">Profil Güvenliği</h6>
+                    <p class="small text-muted">
+                        Kullanıcı bilgilerini güncellerken e-posta adresinin doğruluğundan emin olun. Sistem içi bildirimler bu adres üzerinden iletilmektedir.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        border-color: #ffc107;
+        box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.1);
+    }
+
+    .card {
+        border-radius: 12px;
+    }
+
+    .btn {
+        border-radius: 8px;
+    }
+</style>

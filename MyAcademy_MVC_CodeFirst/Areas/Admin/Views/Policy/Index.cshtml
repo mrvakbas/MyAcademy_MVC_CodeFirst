@@ -1,0 +1,156 @@
+﻿@model List<Policy>
+
+@{
+    ViewBag.Title = "Poliçe Yönetimi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid p-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="h4 mb-0 fw-bold text-dark">Poliçe Yönetimi</h1>
+            <p class="text-muted small mb-0">Sistemdeki tüm aktif ve pasif poliçeleri buradan yönetebilirsiniz.</p>
+        </div>
+        <a href="/Admin/Policy/CreatePolicy" class="btn btn-primary shadow-sm d-flex align-items-center gap-2 px-4 py-2" style="background-color: #4e73df !important; border: none;">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            Yeni Poliçe Oluştur
+        </a>
+    </div>
+        <div class="col-auto mb-2">
+            <div class="input-group shadow-sm">
+                <input type="text" id="policySearch" class="form-control border-0" placeholder="Poliçe ara..." style="width: 250px;">
+                <span class="input-group-text bg-white border-0"><i class="fas fa-search text-muted"></i></span>
+            </div>
+        </div>
+
+    <div class="card border-0 shadow-sm overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="policyTable">
+                <thead class="bg-light bg-opacity-50 border-bottom">
+                    <tr>
+                        <th class="ps-4 py-3 text-muted fw-bold small text-uppercase" style="width: 15%">Poliçe No</th>
+                        <th class="py-3 text-muted fw-bold small text-uppercase">Müşteri</th>
+                        <th class="py-3 text-muted fw-bold small text-uppercase">Kategori</th>
+                        <th class="py-3 text-muted fw-bold small text-uppercase">Şehir</th>
+                        <th class="py-3 text-muted fw-bold small text-uppercase text-center">Durum</th>
+                        <th class="py-3 text-muted fw-bold small text-uppercase text-end pe-4">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4">
+                                    <span class="fw-bold text-dark">#@(item.PolicyNumber ?? "N/A")</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-info bg-opacity-10 text-info p-2 rounded-circle me-3" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                        </div>
+                                        <div>
+                                            @if (item.AppUser != null)
+                                            {
+                                                <div class="fw-semibold">@item.AppUser.Name @item.AppUser.Surname</div>
+                                                <div class="text-muted small">@item.AppUser.Email</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="text-danger small italic">Kullanıcı Atanmamış</div>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary px-3 py-2 fw-semibold" style="color: #4e73df !important;">
+                                        @(item.Category?.Name ?? "Kategorisiz")
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center text-muted small fw-bold">
+                                        <svg width="14" height="14" fill="currentColor" class="me-1 text-danger" viewBox="0 0 16 16">
+                                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+                                        </svg>
+                                        @(item.City ?? "Belirtilmemiş")
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1 small">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1 small">Süresi Doldu</span>
+                                    }
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="/Admin/Policy/UpdatePolicy/@item.Id" class="btn btn-sm btn-outline-primary border-0 p-2 shadow-none rounded-circle">
+                                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                        </a>
+                                        <a href="/Admin/Policy/DeletePolicy/@item.Id" onclick="return confirm('Silmek istediğinize emin misiniz?')" class="btn btn-sm btn-outline-danger border-0 p-2 shadow-none rounded-circle">
+                                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">Kayıtlı poliçe bulunamadı.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('policySearch');
+        const tableRows = document.querySelectorAll('#policyTable tbody tr');
+        const noResults = document.getElementById('noResults');
+        const totalCount = document.getElementById('totalCount');
+
+        searchInput.addEventListener('keyup', function () {
+            const searchValue = this.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            tableRows.forEach(function (row) {
+                const rowText = row.textContent.toLowerCase();
+
+                if (rowText.includes(searchValue)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            totalCount.textContent = visibleCount;
+
+            if (visibleCount === 0) {
+                noResults.classList.remove('d-none');
+                document.querySelector('#policyTable').style.display = 'none';
+            } else {
+                noResults.classList.add('d-none');
+                document.querySelector('#policyTable').style.display = 'table';
+            }
+        });
+
+        searchInput.addEventListener('search', function () {
+            if (this.value === '') {
+                tableRows.forEach(row => row.style.display = '');
+                totalCount.textContent = tableRows.length;
+                noResults.classList.add('d-none');
+                document.querySelector('#policyTable').style.display = 'table';
+            }
+        });
+    });
+</script>

@@ -1,0 +1,122 @@
+﻿@model List<Product>
+
+@{
+    ViewBag.Title = "Ürünler";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid p-4">
+
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex align-items-center gap-3">
+            <h1 class="h4 mb-0 fw-bold">Ürün Yönetimi</h1>
+            <span class="badge bg-primary">@Model.Count</span>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <span>@TempData["Success"]</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="text-center py-5">
+            <svg class="text-muted mb-3" width="64" height="64" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 7l-8-4-8 4m0 0l-2 1v6l10 5 10-5v-6l-2-1m0 0V5m0 0L12 1m0 0L2 5m0 0v6l10 5 10-5V5z" />
+            </svg>
+            <p class="text-muted">Henüz ürün oluşturulmamış</p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-12">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <img src="@item.ImageUrl"
+                                         alt="@item.Name"
+                                         class="rounded-lg"
+                                         style="width: 100px; height: 100px; object-fit: cover; background-color: #f3f4f6;" />
+                                </div>
+
+                                <div class="col">
+                                    <div class="d-flex align-items-start justify-content-between mb-2">
+                                        <div>
+                                            <span class="badge bg-primary mb-2 me-2">
+                                                @item.Category.Name
+                                            </span>
+                                            <h5 class="card-title mb-1">@item.Name</h5>
+                                        </div>
+                                        <h4 class="mb-0 text-primary fw-bold">@item.Price.ToString("C2")</h4>
+                                    </div>
+                                    <p class="card-text text-muted small mb-0" style="max-width: 500px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        @item.Description
+                                    </p>
+                                </div>
+
+                                <div class="col-auto">
+                                    <div class="d-flex gap-2 flex-column flex-md-row">
+                                        <a href="/Admin/Product/UpdateProduct/@item.Id"
+                                           class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            Düzenle
+                                        </a>
+                                        <a href="/Admin/Product/DeleteProduct/@item.Id"
+                                           class="btn btn-outline-danger btn-sm d-flex align-items-center gap-2">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                            Sil
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="d-flex justify-content-end mt-4">
+        <a href="/Admin/Product/CreateProduct" class="btn btn-primary btn-lg d-flex align-items-center gap-2">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Yeni Ürün Oluştur
+        </a>
+    </div>
+</div>
+
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+    }
+
+    .card {
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+            transform: translateY(-2px);
+        }
+
+    .btn-outline-primary:hover,
+    .btn-outline-danger:hover {
+        transform: translateY(-2px);
+    }
+</style>

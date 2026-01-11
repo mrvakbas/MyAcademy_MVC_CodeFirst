@@ -1,0 +1,125 @@
+﻿@model Category
+
+@{
+    ViewBag.Title = "Kategori Düzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid p-4">
+    <div class="d-flex align-items-center mb-4">
+        <h1 class="h4 mb-0 fw-bold text-dark">Kategori Yönetimi</h1>
+        <span class="badge bg-warning text-dark ms-3 shadow-sm px-3 py-2" style="background-color: #ffc107 !important;">Düzenle</span>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 overflow-hidden">
+                <div class="card-header bg-white border-0 py-3">
+                    <h6 class="mb-0 fw-bold text-muted text-uppercase small" style="letter-spacing: 1px; display: flex; align-items: center;">
+                        <svg width="18" height="18" fill="none" stroke="#ffc107" viewBox="0 0 24 24" class="me-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Kategori Bilgilerini Güncelle
+                    </h6>
+                </div>
+
+                <div class="card-body p-4 pt-2">
+                    <div class="alert alert-light border-0 shadow-sm d-flex gap-3 mb-4 py-3" role="alert">
+                        <div class="bg-warning bg-opacity-10 p-2 rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background-color: rgba(255, 193, 7, 0.1) !important;">
+                            <svg width="20" height="20" fill="none" stroke="#ffc107" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h6 class="alert-heading mb-1 fw-bold small text-dark">Dikkat:</h6>
+                            <p class="mb-0 small text-muted">Kategori adını değiştirmek, bu kategoriye bağlı tüm ürünlerin listelenmesini etkileyebilir.</p>
+                        </div>
+                    </div>
+
+                    @using (Html.BeginForm("UpdateCategory", "Category", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(x => x.Id)
+
+                        <div class="mb-3 p-3 bg-light rounded-3 border-start border-warning border-4">
+                            <small class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Sistem Kayıt ID</small>
+                            <p class="mb-0 fw-mono text-dark small">@Model.Id</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label small fw-semibold text-muted text-uppercase d-flex align-items-center">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="me-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
+                                Kategori Adı
+                            </label>
+                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control border-light-subtle py-2", required = "required" })
+                            @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger small mt-1" })
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                            <a href="/Admin/Category/Index" class="btn btn-light btn-sm px-4 fw-semibold text-muted">İptal</a>
+                            <button type="submit" class="btn btn-warning btn-sm px-4 shadow-sm fw-semibold d-flex align-items-center">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="me-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Değişiklikleri Kaydet
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm bg-light bg-opacity-50 h-100" style="background-color: rgba(248, 249, 252, 0.5) !important;">
+                <div class="card-body p-4 text-center">
+                    <div class="bg-warning bg-opacity-10 p-3 rounded-circle d-inline-flex mb-3" style="background-color: rgba(255, 193, 7, 0.1) !important;">
+                        <svg width="32" height="32" fill="none" stroke="#ffc107" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h6 class="fw-bold text-dark">Düzenleme Modu</h6>
+                    <p class="small text-muted text-start">
+                        Şu anda mevcut bir kategoriyi güncelliyorsunuz. Yapılan değişiklikler anında sisteme yansıyacaktır.
+                    </p>
+                    <hr class="my-3 opacity-10">
+                    <div class="text-start small text-muted">
+                        <div class="d-flex align-items-center mb-2">
+                            <svg width="16" height="16" fill="none" stroke="#ffc107" viewBox="0 0 24 24" class="me-2"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+                            SEO uyumlu isimleri tercih edin.
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <svg width="16" height="16" fill="none" stroke="#ffc107" viewBox="0 0 24 24" class="me-2"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                            Müşteri gözünden kontrol edin.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        border-color: #ffc107;
+        box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.1);
+    }
+
+    .card {
+        border-radius: 12px;
+    }
+
+    .btn {
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+    .fw-mono {
+        font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+</style>

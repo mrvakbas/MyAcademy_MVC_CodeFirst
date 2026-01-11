@@ -1,0 +1,295 @@
+﻿@model MyAcademy_MVC_CodeFirst.Controllers.RegisterViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol - MyAcademy</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Senin mevcut CSS stillerin aynen kalabilir, sadece yeni eklenen inputlar için uyumludur */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .register-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .register-header h1 {
+                color: #333;
+                font-size: 24px;
+                font-weight: 700;
+            }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        /* Ad ve Soyad yan yana olsun diye */
+        .form-group {
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+            .input-wrapper i {
+                position: absolute;
+                left: 15px;
+                color: #667eea;
+                font-size: 14px;
+            }
+
+        input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+        }
+
+            input:focus {
+                outline: none;
+                border-color: #667eea;
+                background: white;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 11px;
+            margin-top: 4px;
+            display: none;
+        }
+
+            .error-message.show {
+                display: block;
+            }
+
+        .btn-register {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+            .btn-register:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #999;
+        }
+
+        .validation-summary {
+            color: #ef4444;
+            font-size: 13px;
+            margin-bottom: 15px;
+            list-style: none;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="register-card">
+            <div class="register-header">
+                <h1><i class="fas fa-graduation-cap"></i> MyAcademy</h1>
+                <p>Yeni hesap oluştur</p>
+            </div>
+
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "registerForm" }))
+            {
+                @Html.AntiForgeryToken()
+
+                @* Sunucu tarafı hatalarını (örneğin: bu email zaten kayıtlı) burası gösterir *@
+                <div class="validation-summary">
+                    @Html.ValidationSummary(true)
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="Name">Ad</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="Name" name="Name" placeholder="Adınız" value="@(Model?.Name)">
+                        </div>
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Surname">Soyad</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="Surname" name="Surname" placeholder="Soyadınız" value="@(Model?.Surname)">
+                        </div>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="UserName">Kullanıcı Adı</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-at"></i>
+                        <input type="text" id="UserName" name="UserName" placeholder="Kullanıcı adınız" value="@(Model?.UserName)">
+                    </div>
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="Email">E-posta</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="Email" name="Email" placeholder="ornek@email.com" value="@(Model?.Email)">
+                    </div>
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="Password">Şifre</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="Password" name="Password" placeholder="En az 6 karakter">
+                        <button type="button" class="password-toggle" onclick="togglePassword('Password')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="ConfirmPassword">Şifreyi Onayla</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="ConfirmPassword" name="ConfirmPassword" placeholder="Şifreyi tekrar gir">
+                        <button type="button" class="password-toggle" onclick="togglePassword('ConfirmPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <span class="error-message"></span>
+                </div>
+
+                <button type="submit" class="btn-register">
+                    <i class="fas fa-check-circle"></i> Kayıt Ol
+                </button>
+            }
+
+            <div class="login-link">
+                <a href="/Account/Login">Zaten hesabın var mı? Giriş Yap</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = event.currentTarget.querySelector('i');
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                field.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            let isValid = true;
+
+            // Basit JS Doğrulama
+            const fields = [
+                { id: 'Name', msg: 'Ad gereklidir' },
+                { id: 'Surname', msg: 'Soyad gereklidir' },
+                { id: 'UserName', msg: 'Kullanıcı adı gereklidir' },
+                { id: 'Email', msg: 'E-posta gereklidir' },
+                { id: 'Password', msg: 'Şifre en az 6 karakter olmalıdır' },
+                { id: 'ConfirmPassword', msg: 'Şifre onayı gereklidir' }
+            ];
+
+            fields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el.value.trim() === '' || (f.id === 'Password' && el.value.length < 6)) {
+                    showError(f.id, f.msg);
+                    isValid = false;
+                }
+            });
+
+            if (document.getElementById('Password').value !== document.getElementById('ConfirmPassword').value) {
+                showError('ConfirmPassword', 'Şifreler uyuşmuyor');
+                isValid = false;
+            }
+
+            if (!isValid) e.preventDefault();
+        });
+
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = field.closest('.form-group').querySelector('.error-message');
+            field.style.borderColor = '#ef4444';
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+
+            field.addEventListener('input', function () {
+                field.style.borderColor = '#e0e0e0';
+                errorDiv.classList.remove('show');
+            }, { once: true });
+        }
+    </script>
+</body>
+</html>

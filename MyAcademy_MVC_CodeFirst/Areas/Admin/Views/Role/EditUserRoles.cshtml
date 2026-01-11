@@ -1,0 +1,177 @@
+﻿@model MyAcademy_MVC_CodeFirst.Areas.Admin.Models.UserRolesViewModel
+
+@{
+    ViewBag.Title = "Kullanıcı Rollerini Düzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid p-4">
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <a href="/Admin/Role/ManageUserRoles" class="btn btn-light rounded-pill p-2">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+        <h1 class="h4 mb-0 fw-bold">@Model.UserName Düzenle</h1>
+        <span class="badge bg-warning">Rol Yönetimi</span>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                            <svg class="text-primary" width="32" height="32" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+                            </svg>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h5 class="card-title mb-1">@Model.UserName</h5>
+                            <p class="mb-0 text-muted small">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20" class="me-1" style="vertical-align: middle;">
+                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                </svg>
+                                @Model.UserEmail
+                            </p>
+                            <p class="mb-0 text-muted small">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20" class="me-1" style="vertical-align: middle;">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+                                </svg>
+                                ID: @Model.UserId.Substring(0, 8)...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light border-0">
+                    <h5 class="mb-0 fw-bold">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20" class="me-2" style="vertical-align: middle;">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                        </svg>
+                        Roller
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/Admin/Role/EditUserRoles">
+
+                        <input type="hidden" name="UserId" value="@Model.UserId" />
+                        <input type="hidden" name="UserName" value="@Model.UserName" />
+                        <input type="hidden" name="UserEmail" value="@Model.UserEmail" />
+
+                        <div class="alert alert-info d-flex gap-3 mb-4" role="alert">
+                            <svg class="text-info flex-shrink-0" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zm-11-1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" />
+                            </svg>
+                            <div>
+                                <h6 class="alert-heading mb-1">İpucu:</h6>
+                                <p class="mb-0 small">Bu kullanıcıya atamak istediğiniz rolleri seçin. Seçilen roller kaydedilecektir.</p>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="fw-semibold mb-3">Mevcut Roller:</p>
+                            <div class="row g-3">
+                                @if (Model.AllRoles != null && Model.AllRoles.Count > 0)
+                                {
+                                    foreach (var role in Model.AllRoles)
+                                    {
+                                        var isSelected = Model.SelectedRoles != null && Model.SelectedRoles.Contains(role.Name);
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       id="role_@role.Id"
+                                                       name="SelectedRoles"
+                                                       value="@role.Name"
+                                                       @(isSelected ? "checked" : "") />
+                                                <label class="form-check-label" for="role_@role.Id">
+                                                    <strong>@role.Name</strong>
+                                                    <br />
+                                                    <small class="text-muted">ID: @role.Id.Substring(0, 8)...</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="col-12">
+                                        <p class="text-muted text-center">Hiç role bulunamadı</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        @if (Model.SelectedRoles != null && Model.SelectedRoles.Count > 0)
+                        {
+                            <div class="mb-4">
+                                <p class="fw-semibold mb-2">Seçilen Roller:</p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach (var selectedRole in Model.SelectedRoles)
+                                    {
+                                        var badgeClass = selectedRole == "Admin" ? "bg-danger" : "bg-info";
+                                        <span class="badge @badgeClass text-white">@selectedRole</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        <div class="d-grid gap-2 pt-3 border-top">
+                            <button type="submit"
+                                    class="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Rolleri Kaydet
+                            </button>
+                            <a href="/Admin/Role/ManageUserRoles"
+                               class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                İptal
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+    }
+
+    .form-check-input {
+        cursor: pointer;
+        border-color: #dee2e6;
+    }
+
+        .form-check-input:checked {
+            background-color: #135bec;
+            border-color: #135bec;
+        }
+
+    .form-check-label {
+        cursor: pointer;
+    }
+
+    .card {
+        transition: box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        }
+
+    .badge {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+    }
+</style>

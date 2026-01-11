@@ -1,0 +1,173 @@
+﻿@model Policy
+
+@{
+    ViewBag.Title = "Poliçe Düzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid p-4">
+    <div class="d-flex align-items-center mb-4">
+        <a href="/Admin/Policy/Index" class="btn btn-white shadow-sm rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid #eee;">
+            <svg width="20" height="20" fill="none" stroke="#4e73df" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        </a>
+        <h1 class="h4 mb-0 fw-bold text-dark">Poliçe Düzenleme</h1>
+        <span class="badge bg-warning text-dark ms-3 shadow-sm px-3 py-2" style="font-weight: 600;">Poliçe ID: #@Model.Id</span>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 overflow-hidden">
+                <div class="card-header bg-white border-0 py-3">
+                    <h6 class="mb-0 fw-bold text-muted text-uppercase small" style="letter-spacing: 1px; display: flex; align-items: center;">
+                        <svg width="18" height="18" fill="none" stroke="#f6c23e" viewBox="0 0 24 24" class="me-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Mevcut Kaydı Güncelleyin
+                    </h6>
+                </div>
+
+                <div class="card-body p-4 pt-2">
+                    @using (Html.BeginForm("UpdatePolicy", "Policy", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(x => x.Id)
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label small fw-semibold text-muted text-uppercase">Sabit Poliçe Numarası</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted small"><i class="fas fa-lock"></i></span>
+                                    @Html.TextBoxFor(x => x.PolicyNumber, new { @class = "form-control bg-light border-start-0 fw-bold text-dark", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label small fw-semibold text-muted text-uppercase">Kayıtlı Şube/Şehir</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted small"><i class="fas fa-map-marker-alt"></i></span>
+                                    @Html.TextBoxFor(x => x.City, new { @class = "form-control bg-light border-start-0 fw-bold text-dark", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <hr class="my-2 opacity-50">
+                                <p class="text-primary small fw-bold mb-3">Düzenlenebilir Alanlar</p>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label small fw-semibold text-muted text-uppercase">Güncel Bedel (₺)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0 text-muted">₺</span>
+                                    @Html.TextBoxFor(x => x.Price, new { @class = "form-control border-start-0", type = "text", required = "required" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label small fw-semibold text-muted text-uppercase">Sigortalı Müşteri</label>
+                                @Html.DropDownListFor(x => x.AppUserId, (SelectList)ViewBag.AppUserId, new { @class = "form-select", required = "required" })
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label small fw-semibold text-muted text-uppercase">Poliçe Kategorisi</label>
+                                @Html.DropDownListFor(x => x.CategoryId, (SelectList)ViewBag.CategoryId, new { @class = "form-select", required = "required" })
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label small fw-semibold text-muted text-uppercase">Poliçe Durumu</label>
+                                <div class="form-control d-flex align-items-center justify-content-between">
+                                    <span class="small fw-bold text-muted">@(Model.IsActive ? "AKTİF" : "PASİF")</span>
+                                    <div class="form-check form-switch mb-0">
+                                        @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-input", id = "statusSwitch" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label small fw-semibold text-muted text-uppercase">Başlangıç Tarihi</label>
+                                @Html.TextBoxFor(x => x.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label small fw-semibold text-muted text-uppercase">Bitiş Tarihi</label>
+                                @Html.TextBoxFor(x => x.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                            <a href="/Admin/Policy/Index" class="btn btn-light btn-sm px-4 fw-semibold text-muted border">Vazgeç</a>
+                            <button type="submit" class="btn btn-warning btn-sm px-4 shadow-sm fw-bold text-dark d-flex align-items-center" style="border: none; background-color: #f6c23e;">
+                                <i class="fas fa-save me-2"></i>
+                                Güncellemeleri Kaydet
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4" style="background: linear-gradient(145deg, #ffffff, #fffdf5); border-left: 4px solid #f6c23e !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3 text-warning">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="me-2"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                        <h6 class="mb-0 fw-bold">Düzenleme Modu</h6>
+                    </div>
+                    <p class="small text-muted mb-0">
+                        Şu anda <b>@Model.PolicyNumber</b> numaralı poliçeyi düzenliyorsunuz.
+                        <b>Şehir</b> ve <b>Poliçe No</b> bilgileri denetim izi için kilitlenmiştir.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm" style="background-color: #f8f9fc;">
+                <div class="card-body p-4">
+                    <h6 class="small fw-bold text-primary text-uppercase mb-3" style="letter-spacing: 1px;">Önemli Notlar</h6>
+                    <ul class="list-unstyled small text-muted mb-0">
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="fas fa-info-circle me-2 text-primary mt-1"></i>
+                            <span>Fiyat güncellemeleri anında tüm raporlara yansır.</span>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start">
+                            <i class="fas fa-calendar-alt me-2 text-primary mt-1"></i>
+                            <span>Bitiş tarihi bugünden küçük olan poliçeler "Süresi Doldu" olarak işaretlenir.</span>
+                        </li>
+                        <li class="d-flex align-items-start">
+                            <i class="fas fa-history me-2 text-primary mt-1"></i>
+                            <span>Tüm değişiklikler sistem günlüğüne kaydedilir.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus, .form-select:focus {
+        border-color: #f6c23e;
+        box-shadow: 0 0 0 0.25rem rgba(246, 194, 62, 0.1);
+    }
+
+    .form-control[readonly] {
+        background-color: #f8f9fc !important;
+        cursor: not-allowed;
+    }
+
+    .form-label {
+        font-size: 11px !important;
+        letter-spacing: 0.5px;
+    }
+
+    .card {
+        border-radius: 12px;
+    }
+
+    .btn {
+        border-radius: 8px;
+    }
+
+    .form-check-input:checked {
+        background-color: #1cc88a;
+        border-color: #1cc88a;
+    }
+</style>

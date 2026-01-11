@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin Panel - MyAcademy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <style>
+        :root {
+            --bs-primary: #135bec;
+            --primary-color: #135bec;
+            --background-light: #f6f6f8;
+        }
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-light);
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 256px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            background: rgba(19, 91, 236, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+            .sidebar-header img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                border: 2px solid var(--primary-color);
+            }
+
+            .sidebar-header h2 {
+                font-size: 0.95rem;
+                font-weight: 700;
+                color: #1f2937;
+                margin: 0;
+            }
+
+        .sidebar-nav {
+            padding: 0.75rem;
+            flex: 1;
+        }
+
+            .sidebar-nav ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .sidebar-nav a {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                height: 45px;
+                padding: 0 0.75rem;
+                border-radius: 0.5rem;
+                color: #4b5563;
+                text-decoration: none;
+                font-size: 0.875rem;
+                font-weight: 500;
+                transition: all 0.2s;
+            }
+
+                .sidebar-nav a:hover {
+                    background-color: #f3f4f6;
+                    color: #111827;
+                }
+
+                .sidebar-nav a.active {
+                    background-color: rgba(19, 91, 236, 0.1);
+                    color: var(--primary-color);
+                    font-weight: 600;
+                }
+
+        .sidebar-footer {
+            padding: 0.75rem;
+            border-top: 1px solid #e5e7eb;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+            .sidebar-footer a {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                height: 40px;
+                padding: 0 0.75rem;
+                border-radius: 0.5rem;
+                color: #dc2626;
+                text-decoration: none;
+                font-size: 0.875rem;
+                font-weight: 700;
+            }
+
+                .sidebar-footer a:hover {
+                    background-color: #fee2e2;
+                }
+       
+        .main-wrapper {
+            margin-left: 256px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: margin 0.3s ease;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 2rem;
+        }
+
+
+        .btn-ghost {
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .btn-ghost:hover {
+                background-color: #f3f4f6;
+                color: #111827;
+            }
+
+        .card {
+            border: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+            .card:hover {
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+                transition: box-shadow 0.2s;
+            }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img alt="Admin User Profile" src="https://logodix.com/logo/1707094.png" />
+            <h2>Admin Panel</h2>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="/Admin/Dashboard/Index" class="active">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Contact/Index">
+                        <span class="material-symbols-outlined">mail</span>
+                        <span>Mesajlar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Log/Index">
+                        <span class="material-symbols-outlined">history</span>
+                        <span>Sistem Logları</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Policy/Index">
+                        <span class="material-symbols-outlined">description</span>
+                        <span>Poliçeler</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Category/Index">
+                        <span class="material-symbols-outlined">category</span>
+                        <span>Kategoriler</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Role/Index">
+                        <span class="material-symbols-outlined">admin_panel_settings</span>
+                        <span>Roller</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Role/ManageUserRoles">
+                        <span class="material-symbols-outlined">group</span>
+                        <span>Kullanıcılar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Profile/Index" id="nav-profile">
+                        <span class="material-symbols-outlined">person</span>
+                        <span>Profil Bilgilerim</span>
+                    </a>
+                </li>
+
+                <li class="my-2"><hr class="border-light"></li>
+
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <form method="POST" action="/Account/Logout">
+                <a href="/Account/Logout">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Çıkış Yap</span>
+                </a>
+            </form>
+        </div>
+    </aside>
+
+
+
+    <div class="main-wrapper">
+        <main class="main-content">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script>
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        sidebarToggle?.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        });
+
+        sidebarOverlay?.addEventListener('click', () => {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+            });
+        });
+
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            const href = link.getAttribute('href');
+            if (window.location.pathname.includes(href)) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
